@@ -3,15 +3,14 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
-
-const { MongoDB_URI } = require('./configs/keys');
-
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 
 const env = process.env.NODE_ENV || 'development';
 console.log('env is ', env);
+
 
 // Middlewares
 app.use(morgan('dev'));
@@ -28,23 +27,23 @@ app.use(bodyParser.json())
 app.use('/users', require('./routes/users'));
 
 // connect to database
-mongoose.connect(MongoDB_URI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
 mongoose.connection.on('connected', () => {
     console.log(`Connected to MongoDB successfully`)
 })
 
 
 
-if (env !== 'development' && app.use(express.static(path.join(__dirname, '/client/build')))) {
-    console.log('in client build')
-}
+// if (env !== 'development' && app.use(express.static(path.join(__dirname, '/client/build')))) {
+//     console.log('in client build')
+// }
 
 
-if (env !== 'development' && app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/client/build/index.html'));
-})) {
-    console.log('getting files from static build')
-}
+// if (env !== 'development' && app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname + '/client/build/index.html'));
+// })) {
+//     console.log('getting files from static build')
+// }
 
 
 // Port

@@ -1,6 +1,7 @@
 const JWT = require('jsonwebtoken');
 const moment = require('moment');
-const { JWT_SECRET } = require('../configs/keys');
+const dotenv = require('dotenv');
+dotenv.config();
 // Require google from googleapis package.
 const { google } = require('googleapis')
 
@@ -9,8 +10,8 @@ const { OAuth2 } = google.auth
 
 // Create a new instance of oAuth and set our Client ID & Client Secret.
 const oAuth2Client = new OAuth2(
-    "196937481355-4iif1srk1krg51fqnqm7h0guofr0hg6v.apps.googleusercontent.com",
-    "GD_J2PnCkvzMAXcFU2N3wfyB"
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET
 )
 
 signToken = user => {
@@ -19,7 +20,7 @@ signToken = user => {
         sub: user.id,
         iat: new Date().getTime(), // current time
         exp: new Date().setDate(new Date().getDate() + 1) // current time + 1 day ahead
-    }, JWT_SECRET);
+    }, process.env.JWT_SECRET);
 }
 
 getEvents = token => {
@@ -47,11 +48,10 @@ getEvents = token => {
                 // console.log('Upcoming 10 events:');
                 events.map((event) => {
                     let userEventObj = {};
-                    userEventObj.start = moment(event.start.dateTime).format("hh:mm A") || moment(event.start.date).format("hh:mm A");
-                    userEventObj.end = moment(event.end.dateTime).format("hh:mm A") || moment(event.end.date).format("hh:mm A");
+                    userEventObj.start = event.start.dateTime || event.start.date;
+                    userEventObj.end = event.end.dateTime || event.end.date;
                     userEventObj.location = event.location || "Not Yet Decided";
-                    userEventObj.summary = event.summary || "Not Yet Decided";
-                    userEventObj.date = moment(event.start.dateTime).format('YYYY-MM-DD') || moment(event.start.date).format('YYYY-MM-DD')
+                    userEventObj.title = event.summary || "Not Yet Decided";
                     userEvents.push(userEventObj)
                 });
                 resolve(userEvents);

@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { GoogleLogout } from 'react-google-login';
 import * as actions from '../actions/authAction';
 
 export class Navbar extends Component {
 
-    signOut = () => {
+    constructor(props) {
+        super(props);
+        this.logout = this.logout.bind(this);
+    }
+
+    async logout(res) {
         this.props.signOut();
     }
 
@@ -33,11 +39,13 @@ export class Navbar extends Component {
                                 [<li className="nav-item" key={1}>
                                     <Link className="nav-link" to='/signup'>Sign Up</Link>
                                 </li>] : null}
-                            {/* User is Authenticatrd */}
                             {this.props.isAuth ?
-                                <li className="nav-item" key={3}>
-                                    <Link className="nav-link" onClick={this.signOut} to="/">Sign Out</Link>
-                                </li> : null}
+                                <GoogleLogout
+                                    clientId="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                                    buttonText="Logout"
+                                    onLogoutSuccess={this.logout}
+                                >
+                                </GoogleLogout> : null}
                         </ul>
                     </div>
                 </nav>

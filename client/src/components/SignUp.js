@@ -27,14 +27,15 @@ class SignUp extends Component {
         return (
             <div className="text-center mt-5 mb-5">
                 <h2 style={homeHead}>Manage your Calendar</h2>
-                <h5 className='mt-5'>Sign Up with Google</h5>
+                <h5 className='mt-5 mb-5'>Sign Up with Google</h5>
                 <GoogleLogin
-                    clientId="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    clientId="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
                     buttonText="Google"
                     scope="openid profile email https://www.googleapis.com/auth/calendar"
                     onSuccess={this.responseGoogle}
                     onFailure={this.responseGoogle}
-                    className="btn btn-outline-dark mt-5"
+                    isSignedIn={true}
+
                 />
             </div>
         );

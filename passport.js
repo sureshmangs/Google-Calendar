@@ -2,15 +2,15 @@ const passport = require("passport")
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const GoogleStrategy = require('passport-google-token').Strategy;
-
-const { JWT_SECRET, CLIENT_ID, CLIENT_SECRET } = require('./configs/keys');
+const dotenv = require('dotenv');
 const User = require('./models/user');
 
+dotenv.config();
 
 // JSON Web Token Strategy
 passport.use('jwt', new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-    secretOrKey: JWT_SECRET
+    secretOrKey: process.env.JWT_SECRET
 }, async (payload, done) => {
     try {
         //console.log('payload is ', payload)
@@ -36,8 +36,8 @@ passport.use('jwt', new JwtStrategy({
 
 // Google OAuth Strategy
 passport.use('googleToken', new GoogleStrategy({
-    clientID: CLIENT_ID,
-    clientSecret: CLIENT_SECRET,
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
     scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar']
 }, async (accessToken, refreshToken, profile, done) => {
     try {

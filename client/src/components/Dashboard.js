@@ -1,51 +1,26 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import ReactDOM from 'react-dom';
 import axios from 'axios';
-
-//import ReactTable from "react-table";
 import { connect } from 'react-redux';
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
+
+
+// must manually import the stylesheets for each plugin
+import "@fullcalendar/core/main.css";
+import "@fullcalendar/daygrid/main.css";
+import "@fullcalendar/timegrid/main.css";
 
 import * as actions from '../actions/authAction';
 
-const Cal = props => (
-    <div className="col-md-6 col-md-4 mr-auto ml-auto mb-3">
-        <div className="card pt-4 pb-4">
-            <table className="text-center">
-                <thead></thead>
-                <tbody>
-                    <tr>
-                        <td><span className="badge badge-success">Location</span></td>
-                        <td><p className="card-text">{props.event.location} </p></td>
-                    </tr>
-                    <tr>
-                        <td><span className="badge badge-primary">Description</span></td>
-                        <td><p className="card-text">{props.event.summary}</p></td>
-                    </tr>
-                    <tr>
-                        <td><span className="badge badge-danger">Date</span></td>
-                        <td><p className="card-text"> {props.event.date} </p></td>
-                    </tr>
-                    <tr>
-                        <td><span className="badge badge-warning">Time</span> </td>
-                        <td> <p className="card-text">{props.event.start} - {props.event.end}</p></td>
-                    </tr>
-                </tbody>
+class Dashboard extends Component {
 
-            </table>
-        </div>
-    </div>
-)
-
-export class Dashboard extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-        }
-        this.handleEvents = this.handleEvents.bind(this);
-    }
 
 
     async handleEvents() {
+        console.log('axess google token is', this.props.accessTokenG);
         const token = this.props.accessTokenG;
         try {
             if (token) {
@@ -65,33 +40,74 @@ export class Dashboard extends Component {
         this.handleEvents();
     }
 
-    calanderEvents = () => {
-        return this.props.events.map((element, index) => {
-            return <Cal event={element} key={index} />
-        })
-    }
+    calendarComponentRef = React.createRef();
+
+    state = {
+        calendarWeekends: true,
+    };
+
+    EventDetail = ({ event, el }) => {
+        // extendedProps is used to access additional event properties.
+        const content = (
+            <div>
+                <i className="fa fa-space-shuttle"></i> {event.title}
+                <div><i className="fa fa-map-marker"></i> {event.extendedProps.location}</div>
+            </div>
+        );
+        ReactDOM.render(content, el);
+        return el;
+    };
 
 
     render() {
         return (
-            <div className="pt-5 pb-5" style={{ backgroundColor: "rgba(0, 0, 0, 0.56)" }}>
-                <div className="container">
-                    <h2 style={homeHead} className="text-center mb-5">Upcoming Events</h2>
-                    < div className="row" >
-                        {this.calanderEvents()}
-                    </div >
+            <div className="demo-app container mt-5 mb-5">
+                <div className="demo-app-calendar">
+                    <FullCalendar
+                        defaultView="dayGridMonth"
+                        header={{
+                            left: "prev,next today",
+                            center: "title",
+                            right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
+                        }}
+                        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                        ref={this.calendarComponentRef}
+                        weekends={this.state.calendarWeekends}
+                        events={this.props.events}
+                        eventRender={this.EventDetail}
+                        dateClick={this.handleDateClick}
+                    />
                 </div>
             </div>
-        )
+        );
     }
-}
 
-const homeHead = {
-    color: "rgb(156, 158, 160)",
-    fontSize: "50px",
-    fontWeight: "800"
-}
+    toggleWeekends = () => {
+        this.setState({
+            // update a property
+            calendarWeekends: !this.state.calendarWeekends
+        });
+    };
 
+    gotoPast = () => {
+        let calendarApi = this.calendarComponentRef.current.getApi();
+        calendarApi.gotoDate("2000-01-01"); // call a method on the Calendar object
+    };
+
+    // handleDateClick = arg => {
+    //     if (window.confirm("Would you like to add an event to " + arg.dateStr + " ?")) {
+    //         this.setState({
+    //             // add new event data
+    //             calendarEvents: this.state.calendarEvents.concat({
+    //                 // creates a new array
+    //                 title: "New Event",
+    //                 start: arg.date,
+    //                 allDay: arg.allDay
+    //             })
+    //         });
+    //     }
+    // };
+}
 
 function mapStateToProps(state) {
     return {
