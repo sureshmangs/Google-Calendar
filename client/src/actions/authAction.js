@@ -77,6 +77,7 @@ export const oauthGoogle = data => {
             const res = await axios.post('/users/oauth/google', {
                 access_token: data
             });
+            localStorage.setItem('GTOKEN', data);
             localStorage.setItem('JWT_TOKEN', res.data.token);
             let tmp = {};
             tmp.jwtToken = res.data.token;

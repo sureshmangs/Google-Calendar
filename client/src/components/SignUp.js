@@ -29,7 +29,7 @@ class SignUp extends Component {
                 <h2 style={homeHead}>Manage your Calendar</h2>
                 <h5 className='mt-5 mb-5'>Sign Up with Google</h5>
                 <GoogleLogin
-                    clientId="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                    clientId='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
                     buttonText="Google"
                     scope="openid profile email https://www.googleapis.com/auth/calendar"
                     onSuccess={this.responseGoogle}

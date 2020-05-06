@@ -41,7 +41,7 @@ export class Navbar extends Component {
                                 </li>] : null}
                             {this.props.isAuth ?
                                 <GoogleLogout
-                                    clientId="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                                    clientId='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
                                     buttonText="Logout"
                                     onLogoutSuccess={this.logout}
                                 >

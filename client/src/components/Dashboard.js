@@ -21,7 +21,7 @@ class Dashboard extends Component {
 
     async handleEvents() {
         console.log('axess google token is', this.props.accessTokenG);
-        const token = this.props.accessTokenG;
+        const token = localStorage.getItem('GTOKEN');
         try {
             if (token) {
                 await axios.post('/users/calendar', {
