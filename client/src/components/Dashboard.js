@@ -20,7 +20,6 @@ class Dashboard extends Component {
 
 
     async handleEvents() {
-        console.log('axess google token is', this.props.accessTokenG);
         const token = localStorage.getItem('GTOKEN');
         try {
             if (token) {
@@ -29,10 +28,12 @@ class Dashboard extends Component {
                 })
                     .then(result => this.props.getEvents(result.data))
                     .catch(err => console.log('error is ', err))
-            } else console.log('access token not set')
+            } else {
+                // console.log('access token not set')
+            }
 
         } catch (err) {
-            console.log('error is ', err);
+            //console.log('error is ', err);
         }
     }
 
@@ -43,7 +44,7 @@ class Dashboard extends Component {
     calendarComponentRef = React.createRef();
 
     state = {
-        calendarWeekends: true,
+        calendarWeekends: true
     };
 
     EventDetail = ({ event, el }) => {
@@ -57,6 +58,33 @@ class Dashboard extends Component {
         ReactDOM.render(content, el);
         return el;
     };
+
+
+    toggleWeekends = () => {
+        this.setState({
+            // update a property
+            calendarWeekends: !this.state.calendarWeekends
+        });
+    };
+
+    // gotoPast = () => {
+    //     let calendarApi = this.calendarComponentRef.current.getApi();
+    //     calendarApi.gotoDate("2000-01-01"); // call a method on the Calendar object
+    // };
+
+    // handleDateClick = arg => {
+    //     if (window.confirm("Would you like to add an event to " + arg.dateStr + " ?")) {
+    //         this.setState({
+    //             // add new event data
+    //             calendarEvents: this.state.calendarEvents.concat({
+    //                 // creates a new array
+    //                 title: "New Event",
+    //                 start: arg.date,
+    //                 allDay: arg.allDay
+    //             })
+    //         });
+    //     }
+    // };
 
 
     render() {
@@ -81,32 +109,6 @@ class Dashboard extends Component {
             </div>
         );
     }
-
-    toggleWeekends = () => {
-        this.setState({
-            // update a property
-            calendarWeekends: !this.state.calendarWeekends
-        });
-    };
-
-    gotoPast = () => {
-        let calendarApi = this.calendarComponentRef.current.getApi();
-        calendarApi.gotoDate("2000-01-01"); // call a method on the Calendar object
-    };
-
-    // handleDateClick = arg => {
-    //     if (window.confirm("Would you like to add an event to " + arg.dateStr + " ?")) {
-    //         this.setState({
-    //             // add new event data
-    //             calendarEvents: this.state.calendarEvents.concat({
-    //                 // creates a new array
-    //                 title: "New Event",
-    //                 start: arg.date,
-    //                 allDay: arg.allDay
-    //             })
-    //         });
-    //     }
-    // };
 }
 
 function mapStateToProps(state) {

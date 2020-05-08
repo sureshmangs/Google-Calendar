@@ -13,7 +13,6 @@ passport.use('jwt', new JwtStrategy({
     secretOrKey: process.env.JWT_SECRET
 }, async (payload, done) => {
     try {
-        //console.log('payload is ', payload)
         //find the user specified in the token
         const user = await User.findById(payload.sub);
 
@@ -41,11 +40,6 @@ passport.use('googleToken', new GoogleStrategy({
     scope: ['openid', 'email', 'https://www.googleapis.com/auth/calendar']
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-        // Should have full user profile over here
-        // console.log('profile', profile.name);
-        // console.log('accessToken', accessToken);
-        // console.log('refreshToken', refreshToken);
-
         const existingUser = await User.findOne({ "google.id": profile.id });
         if (existingUser) {
             console.log('user already exist')

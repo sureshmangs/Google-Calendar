@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import GoogleLogin from 'react-google-login';
+import { CLIENT_ID } from '../config/keys'
 
 import * as actions from '../actions/authAction';
 
@@ -29,7 +30,7 @@ class SignUp extends Component {
                 <h2 style={homeHead}>Manage your Calendar</h2>
                 <h5 className='mt-5 mb-5'>Sign Up with Google</h5>
                 <GoogleLogin
-                    clientId='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+                    clientId={CLIENT_ID}
                     buttonText="Google"
                     scope="openid profile email https://www.googleapis.com/auth/calendar"
                     onSuccess={this.responseGoogle}

@@ -8,7 +8,6 @@ import * as actions from './actions/authAction';
 class App extends Component {
 
   componentDidMount() {
-    console.log('In App.js calling checkAuth')
     this.props.checkAuth();
   }
 

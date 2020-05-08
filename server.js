@@ -34,16 +34,16 @@ mongoose.connection.on('connected', () => {
 
 
 
-// if (env !== 'development' && app.use(express.static(path.join(__dirname, '/client/build')))) {
-//     console.log('in client build')
-// }
+if (env !== 'development' && app.use(express.static(path.join(__dirname, '/client/build')))) {
+    console.log('in client build')
+}
 
 
-// if (env !== 'development' && app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname + '/client/build/index.html'));
-// })) {
-//     console.log('getting files from static build')
-// }
+if (env !== 'development' && app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
+})) {
+    console.log('getting files from static build')
+}
 
 
 // Port

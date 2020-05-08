@@ -5,9 +5,8 @@ export default (OrigonalComponent) => {
     class MixedComponent extends Component {
 
         checkAuth() {
-            console.log('In authGuard In checkAuth ');
             if (!this.props.isAuth && !this.props.jwtToken) {
-                console.log('user not authenticated')
+                // console.log('user not authenticated')
                 this.props.history.push('/');
             }
         }
@@ -33,5 +32,4 @@ export default (OrigonalComponent) => {
     }
 
     return connect(mapStateToProps)(MixedComponent);
-
 }

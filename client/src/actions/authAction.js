@@ -4,13 +4,11 @@ import axios from 'axios';
 
 export const signOut = () => {
     return dispatch => {
-        localStorage.removeItem('JWT_TOKEN');
+        localStorage.clear();
         dispatch({
             type: AUTH_SIGN_OUT,
             payload: ''
         })
-
-
     }
 }
 
@@ -19,9 +17,7 @@ export const signOut = () => {
 export const getDashboard = () => {
     return async dispatch => {
         try {
-            console.log('In getdashboad result');
             const token = localStorage.getItem('jwtToken');
-            console.log('token is ', token)
             const res = await axios.get('/users/dashboard', {
                 headers: {
                     'Authorization': `${token}`
@@ -34,19 +30,17 @@ export const getDashboard = () => {
             })
 
         } catch (err) {
-            console.log('we got into error in dashboard');
-            console.error('err', err);
+            //console.error('err', err);
         }
     }
 }
 
 
+
 export const checkAuth = () => {
-    console.log('In authAction In checkAuth');
     return async dispatch => {
         try {
             const token = localStorage.getItem('JWT_TOKEN');
-            console.log('token is ', token)
             if (token) {
                 await axios.get('/users/status', {
                     headers: {
@@ -57,14 +51,12 @@ export const checkAuth = () => {
                 dispatch({
                     type: AUTH_SIGN_IN
                 });
-                console.log('user is authenticated');
-            } else console.log('User is not authenticated');
-
-
+            } else {
+                //console.log('User is not authenticated');
+            }
 
         } catch (err) {
-            console.log('Error  User is not authenticated')
-            console.log('error', err)
+            //console.log('error', err)
         }
     };
 }
@@ -79,14 +71,10 @@ export const oauthGoogle = data => {
             });
             localStorage.setItem('GTOKEN', data);
             localStorage.setItem('JWT_TOKEN', res.data.token);
-            let tmp = {};
-            tmp.jwtToken = res.data.token;
-            tmp.accessToken = data;
             dispatch({
                 type: AUTH_SIGN_UP,
-                payload: tmp
+                payload: { "jwtToken": res.data.token, "accessToken": data }
             });
-
 
         } catch (err) {
             dispatch({
@@ -100,8 +88,6 @@ export const oauthGoogle = data => {
 
 
 export const getEvents = (events) => {
-    console.log('in getEvents authaction')
-    console.log('events recived are ', events)
     return async dispatch => {
         dispatch({
             type: DASHBOARD_GET_EVENTS,
